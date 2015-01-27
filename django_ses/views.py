@@ -288,6 +288,14 @@ def handle_bounce(request):
                     complaint_obj=complaint_obj,
                     raw_message=raw_json,
                 )
+            elif notification_type == 'Delivery':
+                delivery_obj = message.get('delivery', {})
+                signals.delivery_received.send(
+                    sender=handle_bounce,
+                    mail_obj=mail_obj,
+                    delivery_obj=delivery_obj,
+                    raw_message=raw_json,
+                )
             else:
                 # We received an unknown notification type. Just log and
                 # ignore it.
